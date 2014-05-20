@@ -4,31 +4,62 @@
 
 using namespace std;
 
+struct Item
+{
+	char name[20];
+	int price;
+};
+
 int main()
 {
 	const char* filename = "item.save";
 
 	fstream file;
+	bool bExist;
 
-	// write
-	//file.open(filename, ios_base::out | ios_base::binary);
+	file.open(filename, ios_base::in);
 
-	//int i;
-
-	//cout << "Enter integer : ";
-	//cin >> i;
-	//file.write((const char*)&i, sizeof(int));
-
-	// read
-	file.open(filename, ios_base::in | ios_base::binary);
-
-	int i;
-	file.read((char*)&i, sizeof(int));
-
-	cout << i;
-
+	if (file.good())
+		bExist = true;
+	else
+		bExist = false;
 
 	file.close();
+
+	if (bExist)
+	{
+		file.open(filename, ios_base::in | ios_base::binary);
+		Item myItem;
+
+		while (file.good())
+		{
+			if (!file.read((char*)&myItem, sizeof(Item)).good())
+				break;
+
+			cout << myItem.name << "\t" << myItem.price << endl;
+		}
+
+		file.close();
+	}
+	else
+	{
+		file.open(filename, ios_base::out | ios_base::binary);
+		Item myItem;
+
+		for (int i = 0; i < 3; i++)
+		{
+			cout << "Enter Item name : ";
+			cin >> myItem.name;
+
+			cout << "Enter Item price : ";
+			cin >> myItem.price;
+
+			file.write((const char*)&myItem, sizeof(Item));
+		}
+
+		file.close();
+	}
+
 
 	_getch();
 	return 0;
