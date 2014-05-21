@@ -32,12 +32,25 @@ INT WINAPI _tWinMain(HINSTANCE hInstance,
 		return 1;
 	}
 
+	int width = 600;
+	int height = 500;
+
 	int cx = ::GetSystemMetrics(SM_CXSCREEN);
+	int cy = ::GetSystemMetrics(SM_CYSCREEN);
+
+	int x = (cx - width)/2;
+	int y = (cy - height)/2;
+
+	DWORD dwStyle = WS_OVERLAPPEDWINDOW;
+	dwStyle = dwStyle & ~WS_MAXIMIZEBOX;
+	//dwStyle = dwStyle & ~WS_MINIMIZEBOX;
+	//dwStyle = dwStyle & ~WS_SYSMENU;
+	//dwStyle = dwStyle & ~WS_CAPTION;
 
 	HWND hWnd = ::CreateWindowEx(0, szClassName, _T("Win32 Test"),
-		WS_OVERLAPPEDWINDOW,
-		0, 0,
-		500, 500,
+		dwStyle,
+		x, y,
+		width, height,
 		NULL, NULL, hInstance, NULL);
 
 	if (hWnd == NULL)
@@ -69,6 +82,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	if (uMsg == WM_DESTROY)
 	{
+		// SendMessage
+		// PostMessage
 		::PostQuitMessage(0);
 		return 0;
 	}
