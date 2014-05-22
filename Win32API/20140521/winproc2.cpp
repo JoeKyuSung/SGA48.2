@@ -14,13 +14,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		PAINTSTRUCT ps;
 		HDC hdc = ::BeginPaint(hWnd, &ps);
 
+		BYTE r = rand()%256;
+		BYTE g = rand()%256;
+		BYTE b = rand()%256;
+
+		COLORREF color = RGB(r,g,b);
+
 		RECT rc;
 		::GetClientRect(hWnd, &rc);
 
-		HBRUSH hBrush = ::CreateSolidBrush(RGB(0,0,255));
+		HBRUSH hBrush = ::CreateSolidBrush(color);
 		HBRUSH hOldBrush = (HBRUSH)::SelectObject(hdc, hBrush);
 
-		HPEN hPen = ::CreatePen(PS_SOLID, 5, RGB(255,0,0));
+		HPEN hPen = ::CreatePen(PS_SOLID, 5, color);
 		HPEN hOldPen = (HPEN)::SelectObject(hdc, hPen);
 
 		::Rectangle(hdc, rc.left+10, rc.top+10,

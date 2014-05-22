@@ -5,6 +5,8 @@ INT WINAPI _tWinMain(HINSTANCE hInstance,
 					 LPTSTR lpCmdLine,
 					 INT nCmdShow)
 {
+	::srand((unsigned)time(NULL));
+
 	LPCTSTR szClassName = _T("MyMainWindowClass");
 
 	WNDCLASSEX wcex;
