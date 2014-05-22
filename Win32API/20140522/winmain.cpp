@@ -42,11 +42,12 @@ INT WINAPI _tWinMain(HINSTANCE hInstance,
 
 	DWORD dwStyle = WS_OVERLAPPEDWINDOW;
 	dwStyle = dwStyle & ~WS_MAXIMIZEBOX;
+	dwStyle = dwStyle & ~WS_THICKFRAME;
 	//dwStyle = dwStyle & ~WS_MINIMIZEBOX;
 	//dwStyle = dwStyle & ~WS_SYSMENU;
 	//dwStyle = dwStyle & ~WS_CAPTION;
 
-	HWND hWnd = ::CreateWindowEx(0, szClassName, _T("Win32 Test"),
+	HWND hWnd = ::CreateWindowEx(0, szClassName, _T("Circle Sample"),
 		dwStyle,
 		x, y,
 		width, height,
