@@ -23,14 +23,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		RECT rc;
 		::GetClientRect(hWnd, &rc);
 
+		const LONG size = 100;
+		POINT center = {(rc.left + rc.right)/2,
+						(rc.top + rc.bottom)/2};
+
 		HBRUSH hBrush = ::CreateSolidBrush(color);
 		HBRUSH hOldBrush = (HBRUSH)::SelectObject(hdc, hBrush);
 
 		HPEN hPen = ::CreatePen(PS_SOLID, 5, color);
 		HPEN hOldPen = (HPEN)::SelectObject(hdc, hPen);
 
-		::Rectangle(hdc, rc.left+10, rc.top+10,
-			rc.right-10, rc.bottom-10);
+		::Rectangle(hdc, center.x - size/2, center.y - size/2,
+			center.x + size/2, center.y + size/2);
 
 		::SelectObject(hdc, hOldPen);
 		::DeleteObject(hPen);
