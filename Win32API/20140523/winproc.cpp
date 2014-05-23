@@ -4,6 +4,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	const int count = 10;
 	static Point pt[count];
+	static Point ptMouse;
 
 	if (uMsg == WM_CREATE)
 	{
@@ -17,10 +18,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			pt[i] = Point(rand()%width, rand()%height);
 		}
 
+		::SetTimer(hWnd, 0, 100, NULL);
+
 		return 0;
 	}
 	else if (uMsg == WM_DESTROY)
 	{
+		::KillTimer(hWnd, 0);
+
 		::PostQuitMessage(0);
 		return 0;
 	}
@@ -30,6 +35,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		HDC hdc = ::BeginPaint(hWnd, &ps);
 
 		// TODO.....
+		RECT rc;
+		::GetClientRect(hWnd, &rc);
+
 		for (int i = 0; i < count; i++)
 		{
 			Circle one;
@@ -40,7 +48,39 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			one.Draw(hdc);
 		}
 
+		//TCHAR szText[10];
+		//_stprintf(szText, _T("%d,%d"), ptMouse.x, ptMouse.y);
+
+		std::wostringstream oss;
+		oss << ptMouse.x << _T(", ") << ptMouse.y;
+
+		::DrawText(hdc, oss.str().c_str(), -1, &rc, DT_TOP);
+
 		::EndPaint(hWnd, &ps);
+		return 0;
+	}
+	else if (uMsg == WM_TIMER)
+	{
+		for (int i = 0; i < count; i++)
+		{
+			pt[i].x += 10;
+		}
+
+		RECT rc;
+		::GetClientRect(hWnd, &rc);
+		::InvalidateRect(hWnd, &rc, TRUE);
+
+		return 0;
+	}
+	else if (uMsg == WM_LBUTTONDOWN)
+	{
+		ptMouse.x = GET_X_LPARAM(lParam);
+		ptMouse.y = GET_Y_LPARAM(lParam);
+
+		RECT rc;
+		::GetClientRect(hWnd, &rc);
+		::InvalidateRect(hWnd, &rc, TRUE);
+
 		return 0;
 	}
 
