@@ -31,8 +31,8 @@ INT WINAPI _tWinMain(HINSTANCE hInstance,
 		return 1;
 	}
 
-	int width = 400;
-	int height = 400;
+	int width = 600;
+	int height = 300;
 
 	int cx = ::GetSystemMetrics(SM_CXSCREEN);
 	int cy = ::GetSystemMetrics(SM_CYSCREEN);
@@ -41,13 +41,13 @@ INT WINAPI _tWinMain(HINSTANCE hInstance,
 	int y = (cy - height)/2;
 
 	DWORD dwStyle = WS_OVERLAPPEDWINDOW;
-	dwStyle = dwStyle & ~WS_MAXIMIZEBOX;
-	dwStyle = dwStyle & ~WS_THICKFRAME;
+	dwStyle &= ~WS_MAXIMIZEBOX;
+	dwStyle &= ~WS_THICKFRAME;
 	//dwStyle = dwStyle & ~WS_MINIMIZEBOX;
 	//dwStyle = dwStyle & ~WS_SYSMENU;
 	//dwStyle = dwStyle & ~WS_CAPTION;
 
-	HWND hWnd = ::CreateWindowEx(0, szClassName, _T("Circle Sample"),
+	HWND hWnd = ::CreateWindowEx(0, szClassName, _T("홍길동"),
 		dwStyle,
 		x, y,
 		width, height,
