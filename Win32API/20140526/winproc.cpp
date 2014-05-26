@@ -2,7 +2,7 @@
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	const int radius = 15;
+	const int radius = 20;
 	const int count = 50;
 	static Circle marble[count];
 	static Point ptMouse;
