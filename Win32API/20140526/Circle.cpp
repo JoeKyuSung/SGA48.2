@@ -43,7 +43,7 @@ void Circle::Update()
 	if (center.x + speed - radius > rc.right)
 	{
 		center.x = rc.left - radius;
-		center.y = rand()%(height-2*radius) + radius;
+		center.y = rand()%(height-radius-150) + radius;
 	}
 	else
 	{

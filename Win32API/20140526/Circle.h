@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <windows.h>
+#define _USE_MATH_DEFINES
 #include <math.h>
 
 struct Point : public POINT
