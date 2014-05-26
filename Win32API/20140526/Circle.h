@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <windows.h>
+#include <math.h>
 
 struct Point : public POINT
 {
@@ -15,6 +16,7 @@ public :
 
 	void Attach(HWND);
 
+	void Input(const Point& pt);
 	void Update();
 	void Draw(HDC);
 
@@ -32,4 +34,6 @@ private :
 	COLORREF color;
 
 	LONG speed;
+
+	bool bSelect;
 };

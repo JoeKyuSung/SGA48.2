@@ -19,8 +19,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			marble[i].Attach(hWnd);
 			marble[i].SetRadius(radius);
 			marble[i].SetCenter(Point(rand()%width, rand()%(height-2*radius) + radius));
-			marble[i].SetColor(RGB(rand()%256,rand()%256,rand()%256));
-			marble[i].SetSpeed(rand()%30 + 10);
+			marble[i].SetColor(RGB(rand()%156 + 100,rand()%156 + 100,rand()%156 + 100));
+			marble[i].SetSpeed(rand()%20 + 5);
 		}
 
 		::SetTimer(hWnd, 0, 100, NULL);
@@ -76,6 +76,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
 		ptMouse.x = GET_X_LPARAM(lParam);
 		ptMouse.y = GET_Y_LPARAM(lParam);
+
+		for (int i = 0; i < count; i++)
+		{
+			marble[i].Input(ptMouse);
+		}
 
 		RECT rc;
 		::GetClientRect(hWnd, &rc);

@@ -9,6 +9,7 @@ Point::Point(const LONG& _x, const LONG& _y)
 Circle::Circle()
 : radius(10), color(RGB(0,0,0))
 , hOwner(NULL), speed(10)
+, bSelect(false)
 {
 }
 Circle::~Circle()
@@ -18,8 +19,23 @@ void Circle::Attach(HWND hWnd)
 {
 	hOwner = hWnd;
 }
+void Circle::Input(const Point& pt)
+{
+	LONG dx = center.x - pt.x;
+	LONG dy = center.y - pt.y;
+
+	float L = sqrt(float(dx*dx + dy*dy));
+
+	if (L > radius)
+		bSelect = false;
+	else
+		bSelect = true;
+}
 void Circle::Update()
 {
+	if (bSelect)
+		SetColor(RGB(0,0,0));
+
 	RECT rc;
 	::GetClientRect(hOwner, &rc);
 	LONG height = rc.bottom - rc.top;
