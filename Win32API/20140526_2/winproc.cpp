@@ -2,12 +2,16 @@
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	static POINT ptEnd = {200+150,200};
-	static LONG theta = 0;
+	static POINT ptHour;
+	static POINT ptMinute;
+	static POINT ptSecond;
+	static LONG thetaHour = 0;
+	static LONG thetaMinute = 0;
+	static LONG thetaSecond = 0;
 
 	if (uMsg == WM_CREATE)
 	{
-		::SetTimer(hWnd, 0, 100, NULL);
+		::SetTimer(hWnd, 0, 10, NULL);
 
 		return 0;
 	}
@@ -31,7 +35,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		::Ellipse(hdc, 0, 0, 400, 400);
 
 		::MoveToEx(hdc, 200, 200, NULL);
-		::LineTo(hdc, ptEnd.x, ptEnd.y);
+		::LineTo(hdc, ptHour.x, ptHour.y);
+
+		::MoveToEx(hdc, 200, 200, NULL);
+		::LineTo(hdc, ptMinute.x, ptMinute.y);
+
+		::MoveToEx(hdc, 200, 200, NULL);
+		::LineTo(hdc, ptSecond.x, ptSecond.y);
 
 		::EndPaint(hWnd, &ps);
 		return 0;
@@ -44,20 +54,32 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		//::GetSystemTime(&st);
 		::GetLocalTime(&st);
 
-		theta = LONG((st.wHour%12)*30
-			+ float(st.wMinute)/2 
-			+ float(st.wSecond)/120
-			+ float(st.wMilliseconds)/120000);
+		thetaHour = LONG((st.wHour%12)*30
+					+ float(st.wMinute)/2 
+					+ float(st.wSecond)/120
+					+ float(st.wMilliseconds)/120000);
 
-		//theta += 6;
-		//if (theta >= 360)
-		//	theta = 0;
+		thetaMinute = LONG(st.wMinute*6 
+					+ float(st.wSecond)/10
+					+ float(st.wMilliseconds)/10000);
 
-		LONG L = 150;
+		thetaSecond = LONG(st.wSecond*6
+					+ float(st.wMilliseconds)*6/1000);
+
+		LONG LHour = 80;
+		LONG LMinute = 100;
+		LONG LSecond = 150;
+
 		const float D2R = float(M_PI/180);
 
-		ptEnd.x = LONG(200 + L*cos((90-theta)*D2R));
-		ptEnd.y = LONG(200 - L*sin((90-theta)*D2R));
+		ptHour.x = LONG(200 + LHour*cos((90-thetaHour)*D2R));
+		ptHour.y = LONG(200 - LHour*sin((90-thetaHour)*D2R));
+
+		ptMinute.x = LONG(200 + LMinute*cos((90-thetaMinute)*D2R));
+		ptMinute.y = LONG(200 - LMinute*sin((90-thetaMinute)*D2R));
+
+		ptSecond.x = LONG(200 + LSecond*cos((90-thetaSecond)*D2R));
+		ptSecond.y = LONG(200 - LSecond*sin((90-thetaSecond)*D2R));
 
 		// redraw
 		RECT rc;
