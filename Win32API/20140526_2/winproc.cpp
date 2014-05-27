@@ -7,7 +7,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 	if (uMsg == WM_CREATE)
 	{
-		::SetTimer(hWnd, 0, 1000, NULL);
+		::SetTimer(hWnd, 0, 100, NULL);
 
 		return 0;
 	}
@@ -39,15 +39,25 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	else if (uMsg == WM_TIMER)
 	{
 		// TODO
-		theta += 6;
-		if (theta >= 360)
-			theta = 0;
+		SYSTEMTIME st;
+		
+		//::GetSystemTime(&st);
+		::GetLocalTime(&st);
+
+		theta = LONG((st.wHour%12)*30
+			+ float(st.wMinute)/2 
+			+ float(st.wSecond)/120
+			+ float(st.wMilliseconds)/120000);
+
+		//theta += 6;
+		//if (theta >= 360)
+		//	theta = 0;
 
 		LONG L = 150;
 		const float D2R = float(M_PI/180);
 
-		ptEnd.x = LONG(200 + L*cos(theta*D2R));
-		ptEnd.y = LONG(200 - L*sin(theta*D2R));
+		ptEnd.x = LONG(200 + L*cos((90-theta)*D2R));
+		ptEnd.y = LONG(200 - L*sin((90-theta)*D2R));
 
 		// redraw
 		RECT rc;
