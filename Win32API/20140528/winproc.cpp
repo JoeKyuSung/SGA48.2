@@ -2,9 +2,17 @@
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
+	static Tank mine;
 
 	if (uMsg == WM_CREATE)
 	{
+		Rect rc;
+		::GetClientRect(hWnd, &rc);
+
+		mine.Attach(hWnd);
+		mine.SetPosition(rc.center());
+		mine.SetRadius(50);
+
 		::SetTimer(hWnd, 0, 10, NULL);
 
 		return 0;
@@ -25,6 +33,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		RECT rc;
 		::GetClientRect(hWnd, &rc);
 
+		mine.Draw(hdc);
 
 
 
@@ -34,6 +43,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	else if (uMsg == WM_TIMER)
 	{
 		// TODO
+		mine.Input(0);
+		mine.Update(0);
 
 
 
