@@ -31,8 +31,8 @@ INT WINAPI _tWinMain(HINSTANCE hInstance,
 		return 1;
 	}
 
-	int width = 500;
-	int height = 500;
+	int width = 400;
+	int height = 400;
 
 	int cx = ::GetSystemMetrics(SM_CXSCREEN);
 	int cy = ::GetSystemMetrics(SM_CYSCREEN);
