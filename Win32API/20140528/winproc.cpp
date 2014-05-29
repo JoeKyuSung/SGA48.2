@@ -3,6 +3,7 @@
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	static Tank mine;
+	static Tank other;
 	static DWORD st = 0;
 	static DWORD dt = 0;
 
@@ -11,8 +12,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		Rect rc;
 		::GetClientRect(hWnd, &rc);
 
+		other.Attach(hWnd);
+		other.SetPosition(Point(200, 200));
+		other.SetRadius(50);
+		other.SetKeyboard('A', 'D', VK_LSHIFT, 'W', 'S');
+
 		mine.Attach(hWnd);
-		mine.SetPosition(rc.center());
+		mine.SetPosition(Point(600, 200));
 		mine.SetRadius(50);
 
 		st = ::GetTickCount();
@@ -38,6 +44,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		::GetClientRect(hWnd, &rc);
 
 		mine.Draw(hdc);
+		other.Draw(hdc);
 
 		MissileDepot.Draw(hdc);
 
@@ -51,6 +58,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		mine.Input(dt);
 		mine.Update(dt);
 
+		other.Input(dt);
+		other.Update(dt);
 
 		MissileDepot.Input(dt);
 		MissileDepot.Update(dt);

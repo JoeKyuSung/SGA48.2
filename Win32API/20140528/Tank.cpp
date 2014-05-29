@@ -3,9 +3,15 @@
 Tank::Tank()
 : radius(10)
 , hOwner(NULL)
-, speed(5)
+, rotate_speed(5)
+, move_speed(5)
 , theta(0)
 , input_dt(0), input_delay(100)
+, key_left(VK_LEFT)
+, key_right(VK_RIGHT)
+, key_fire(VK_SPACE)
+, key_forward(VK_UP)
+, key_backward(VK_DOWN)
 {
 	_changepoint();
 }
@@ -19,15 +25,15 @@ void Tank::Attach(HWND hWnd)
 void Tank::Input(DWORD tick)
 {
 	// 0x8001
-	if ((::GetAsyncKeyState(VK_LEFT) & 0x8000) == 0x8000)
+	if ((::GetAsyncKeyState(key_left) & 0x8000) == 0x8000)
 	{
-		theta -= float(speed);
+		theta -= float(rotate_speed);
 	}
-	if ((::GetAsyncKeyState(VK_RIGHT) & 0x8000) == 0x8000)
+	if ((::GetAsyncKeyState(key_right) & 0x8000) == 0x8000)
 	{
-		theta += float(speed);
+		theta += float(rotate_speed);
 	}
-	if ((::GetAsyncKeyState(VK_SPACE) & 0x8000) == 0x8000)
+	if ((::GetAsyncKeyState(key_fire) & 0x8000) == 0x8000)
 	{
 		if (input_dt >= input_delay)
 		{
@@ -41,6 +47,16 @@ void Tank::Input(DWORD tick)
 
 			input_dt = 0;
 		}
+	}
+	if ((::GetAsyncKeyState(key_forward) & 0x8000) == 0x8000)
+	{
+		center.x = center.x + move_speed*sin(theta*D2R);
+		center.y = center.y - move_speed*cos(theta*D2R);
+	}
+	if ((::GetAsyncKeyState(key_backward) & 0x8000) == 0x8000)
+	{
+		center.x = center.x - move_speed*sin(theta*D2R);
+		center.y = center.y + move_speed*cos(theta*D2R);
 	}
 
 	input_dt += tick;
@@ -69,13 +85,29 @@ void Tank::SetRadius(const LONG& r)
 {
 	radius = r;
 }
-void Tank::SetSpeed(const LONG& s)
+void Tank::SetRotateSpeed(const LONG& s)
 {
-	speed = s;
+	rotate_speed = s;
+}
+void Tank::SetMoveSpeed(const LONG& s)
+{
+	move_speed = s;
 }
 Point Tank::GetCenter() const
 {
 	return center;
+}
+void Tank::SetKeyboard(const int& left, 
+					   const int& right, 
+					   const int& fire,
+					   const int& forward,
+					   const int& backward)
+{
+	key_left = left;
+	key_right = right;
+	key_fire = fire;
+	key_forward = forward;
+	key_backward = backward;
 }
 void Tank::_changepoint()
 {

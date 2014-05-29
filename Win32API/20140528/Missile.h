@@ -30,7 +30,7 @@ private :
 
 class MissileManager
 {
-	enum { count = 10 };
+	enum { count = 100 };
 private :
 	MissileManager();
 	~MissileManager();

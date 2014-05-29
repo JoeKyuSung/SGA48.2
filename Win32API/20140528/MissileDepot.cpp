@@ -40,7 +40,7 @@ void MissileManager::Update(DWORD tick)
 
 			if (depot[i]->GetPosition().x < 0 ||
 				depot[i]->GetPosition().y < 0 ||
-				depot[i]->GetPosition().x > 400 ||
+				depot[i]->GetPosition().x > 800 ||
 				depot[i]->GetPosition().y > 400)
 			{
 				delete depot[i];
