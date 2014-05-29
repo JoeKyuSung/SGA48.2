@@ -1,6 +1,10 @@
 ﻿#pragma once
 
 #include <windows.h>
+#define _USE_MATH_DEFINES
+#include <math.h>
+
+#define D2R float(M_PI/180)
 
 struct Point : public POINT
 {

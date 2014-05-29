@@ -5,7 +5,9 @@ Tank::Tank()
 , hOwner(NULL)
 , speed(5)
 , theta(0)
+, input_dt(0), input_delay(100)
 {
+	_changepoint();
 }
 Tank::~Tank()
 {
@@ -19,20 +21,34 @@ void Tank::Input(DWORD tick)
 	// 0x8001
 	if ((::GetAsyncKeyState(VK_LEFT) & 0x8000) == 0x8000)
 	{
-		theta -= speed;
+		theta -= float(speed);
 	}
 	if ((::GetAsyncKeyState(VK_RIGHT) & 0x8000) == 0x8000)
 	{
-		theta += speed;
+		theta += float(speed);
 	}
-	//::GetKeyState();
-	//::GetKeyboardState();
+	if ((::GetAsyncKeyState(VK_SPACE) & 0x8000) == 0x8000)
+	{
+		if (input_dt >= input_delay)
+		{
+			Missile* pMissile = new Missile;
+			pMissile->SetPosition(ptEnd);
+			pMissile->SetRadius(5);
+			pMissile->SetAngle(theta);
+			pMissile->SetSpeed(5);
+
+			MissileDepot.push(pMissile);
+
+			input_dt -= input_delay;
+		}
+	}
+
+	input_dt += tick;
 }
 void Tank::Update(DWORD tick)
 {
 	// TODO
-	ptEnd.x = LONG(center.x + 100*cos((90-theta)*D2R));
-	ptEnd.y = LONG(center.y - 100*sin((90-theta)*D2R));
+	_changepoint();
 }
 void Tank::Draw(HDC hdc)
 {
@@ -47,8 +63,7 @@ void Tank::SetPosition(const Point& pt)
 {
 	center = pt;
 
-	ptEnd.x = LONG(center.x + 100*cos((90-theta)*D2R));
-	ptEnd.y = LONG(center.y - 100*sin((90-theta)*D2R));
+	_changepoint();
 }
 void Tank::SetRadius(const LONG& r)
 {
@@ -62,4 +77,8 @@ Point Tank::GetCenter() const
 {
 	return center;
 }
-
+void Tank::_changepoint()
+{
+	ptEnd.x = LONG(center.x + 100*sin(theta*D2R));
+	ptEnd.y = LONG(center.y - 100*cos(theta*D2R));
+}

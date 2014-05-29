@@ -1,11 +1,8 @@
 ﻿#pragma once
 
 #include <windows.h>
-#define _USE_MATH_DEFINES
-#include <math.h>
 #include "BaseType.h"
-
-#define D2R float(M_PI/180)
+#include "Missile.h"
 
 class Tank
 {
@@ -25,6 +22,9 @@ public :
 	Point GetCenter() const;
 
 private :
+	void _changepoint();
+
+private :
 	HWND hOwner;
 
 	Point center;
@@ -32,5 +32,9 @@ private :
 
 	LONG speed;
 	Point ptEnd;
-	LONG theta;
+
+	float theta;
+
+	DWORD input_dt;
+	DWORD input_delay;
 };

@@ -10,5 +10,6 @@
 #include <math.h>
 #include "Tank.h"
 #include "BaseType.h"
+#include "Missile.h"
 
 LRESULT CALLBACK WndProc(HWND,UINT,WPARAM,LPARAM);

@@ -175,6 +175,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Missile.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MissileDepot.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Tank.cpp"
 				>
 			</File>
@@ -194,6 +202,10 @@
 			>
 			<File
 				RelativePath=".\BaseType.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Missile.h"
 				>
 			</File>
 			<File

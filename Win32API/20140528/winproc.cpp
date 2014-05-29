@@ -3,6 +3,8 @@
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	static Tank mine;
+	static DWORD st = 0;
+	static DWORD dt = 0;
 
 	if (uMsg == WM_CREATE)
 	{
@@ -12,6 +14,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		mine.Attach(hWnd);
 		mine.SetPosition(rc.center());
 		mine.SetRadius(50);
+
+		st = ::GetTickCount();
 
 		::SetTimer(hWnd, 0, 10, NULL);
 
@@ -35,6 +39,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 		mine.Draw(hdc);
 
+		MissileDepot.Draw(hdc);
 
 
 		::EndPaint(hWnd, &ps);
@@ -43,10 +48,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	else if (uMsg == WM_TIMER)
 	{
 		// TODO
-		mine.Input(0);
-		mine.Update(0);
+		mine.Input(dt);
+		mine.Update(dt);
 
 
+		MissileDepot.Input(dt);
+		MissileDepot.Update(dt);
+
+		dt = ::GetTickCount() - st;
+		st = ::GetTickCount();
 
 		// redraw
 		RECT rc;
