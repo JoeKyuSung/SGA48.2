@@ -39,7 +39,7 @@ void Tank::Input(DWORD tick)
 
 			MissileDepot.push(pMissile);
 
-			input_dt -= input_delay;
+			input_dt = 0;
 		}
 	}
 
