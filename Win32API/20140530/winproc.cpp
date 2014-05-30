@@ -4,8 +4,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	static DWORD st = 0;
 	static DWORD dt = 0;
-	static Point ptMouse;
-	static LONG radius = 20;
+	static Point ptMouse[10];
+	static LONG radius = 50;
 
 	if (uMsg == WM_CREATE)
 	{
@@ -14,7 +14,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 
 		st = ::GetTickCount();
-		::SetTimer(hWnd, 0, 10, NULL);
+		::SetTimer(hWnd, 0, 50, NULL);
 
 		::ShowCursor(FALSE);
 
@@ -44,10 +44,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		HPEN hPen = ::CreatePen(PS_SOLID, 1, RGB(255,0,0));
 		HPEN hOldPen = ::Select(hdc, hPen);
 
-		::Ellipse(hdc, ptMouse.x - radius,
-			ptMouse.y - radius,
-			ptMouse.x + radius,
-			ptMouse.y + radius);
+		for (int i = 9; i >= 0; i--)
+		{
+			int r = int(radius*float(10-i)/10);
+			::Ellipse(hdc, ptMouse[i].x - r,
+				ptMouse[i].y - r,
+				ptMouse[i].x + r,
+				ptMouse[i].y + r);
+		}
 
 		::Select(hdc, hOldPen);
 		::DeleteObject(hPen);
@@ -61,8 +65,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	}
 	else if (uMsg == WM_MOUSEMOVE)
 	{
-		::GetCursorPos(&ptMouse);
-		ptMouse = ptMouse.ToClient(hWnd);
+		::GetCursorPos(&ptMouse[0]);
+		ptMouse[0] = ptMouse[0].ToClient(hWnd);
 
 		Rect rc;
 		::GetClientRect(hWnd, &rc);
@@ -73,6 +77,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	else if (uMsg == WM_TIMER)
 	{
 		// TODO
+		for (int i = 1; i < 10 - 1; i++)
+		{
+			ptMouse[i+1] = follow(ptMouse[i], ptMouse[i-1]);
+		}
 
 		dt = ::GetTickCount() - st;
 		st = ::GetTickCount();
@@ -86,4 +94,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	}
 
 	return ::DefWindowProc(hWnd,uMsg,wParam,lParam);
+}
+
+Point follow(Point& dest, const Point& src)
+{
+	Point tmp = dest;
+	dest = src;
+
+	return tmp;
 }

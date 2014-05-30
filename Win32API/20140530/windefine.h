@@ -10,3 +10,4 @@
 #include "Utility.hpp"
 
 LRESULT CALLBACK WndProc(HWND,UINT,WPARAM,LPARAM);
+Point follow(Point& dest, const Point& src);
