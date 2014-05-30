@@ -28,6 +28,8 @@ public :
 					const int& forward,
 					const int& backward);
 
+	void ChangeHealth(const int& diff);
+
 private :
 	void _changepoint();
 
@@ -51,4 +53,8 @@ private :
 	int key_forward;
 	int key_backward;
 	int key_fire;
+
+	COLORREF hp_color;
+	int hp_total;
+	int hp_current;
 };

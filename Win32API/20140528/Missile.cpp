@@ -45,3 +45,7 @@ Point Missile::GetPosition() const
 {
 	return center;
 }
+LONG Missile::GetRadius() const
+{
+	return radius;
+}

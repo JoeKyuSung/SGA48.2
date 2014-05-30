@@ -12,6 +12,9 @@ Tank::Tank()
 , key_fire(VK_SPACE)
 , key_forward(VK_UP)
 , key_backward(VK_DOWN)
+, hp_color(RGB(255,0,0))
+, hp_current(100)
+, hp_total(100)
 {
 	_changepoint();
 }
@@ -50,13 +53,13 @@ void Tank::Input(DWORD tick)
 	}
 	if ((::GetAsyncKeyState(key_forward) & 0x8000) == 0x8000)
 	{
-		center.x = center.x + move_speed*sin(theta*D2R);
-		center.y = center.y - move_speed*cos(theta*D2R);
+		center.x = LONG(center.x + move_speed*sin(theta*D2R));
+		center.y = LONG(center.y - move_speed*cos(theta*D2R));
 	}
 	if ((::GetAsyncKeyState(key_backward) & 0x8000) == 0x8000)
 	{
-		center.x = center.x - move_speed*sin(theta*D2R);
-		center.y = center.y + move_speed*cos(theta*D2R);
+		center.x = LONG(center.x - move_speed*sin(theta*D2R));
+		center.y = LONG(center.y + move_speed*cos(theta*D2R));
 	}
 
 	input_dt += tick;
@@ -65,11 +68,47 @@ void Tank::Update(DWORD tick)
 {
 	// TODO
 	_changepoint();
+
+	// check collision
+	Missile** MissileList = MissileDepot.getDepot();
+	for (int i = 0; i < MissileManager::count; i++)
+	{
+		if (MissileList[i])
+		{
+			Point pt = MissileList[i]->GetPosition();
+			LONG r = MissileList[i]->GetRadius();
+
+			if ((r + radius)*(r + radius) >= (pt ^ center))
+			{
+				ChangeHealth(-5);
+
+				MissileDepot.pop(i);
+			}
+		}
+	}
 }
 void Tank::Draw(HDC hdc)
 {
 	::Ellipse(hdc, center.x - radius, center.y - radius,
 		center.x + radius, center.y + radius);
+
+	const int margin = 30;
+
+	::Rectangle(hdc, center.x - radius,
+		center.y - radius - margin,
+		center.x + radius,
+		center.y - radius - margin + 15);
+
+	HBRUSH hBrush = ::CreateSolidBrush(hp_color);
+	HBRUSH hOldBrush = (HBRUSH)::SelectObject(hdc, hBrush);
+
+	::Rectangle(hdc, center.x - radius,
+		center.y - radius - margin,
+		center.x - radius + 2*radius*hp_current/hp_total,
+		center.y - radius - margin + 15);
+
+	::SelectObject(hdc, hOldBrush);
+	::DeleteObject(hBrush);
 
 	::MoveToEx(hdc, center.x, center.y, NULL);
 	::LineTo(hdc, ptEnd.x, ptEnd.y);
@@ -108,6 +147,15 @@ void Tank::SetKeyboard(const int& left,
 	key_fire = fire;
 	key_forward = forward;
 	key_backward = backward;
+}
+void Tank::ChangeHealth(const int& diff)
+{
+	hp_current += diff;
+	
+	if (hp_current < 0)
+		hp_current = 0;
+	else if (hp_current > hp_total)
+		hp_current = hp_total;
 }
 void Tank::_changepoint()
 {

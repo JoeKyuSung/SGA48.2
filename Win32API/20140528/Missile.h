@@ -20,6 +20,7 @@ public :
 	void SetAngle(const float& angle);
 
 	Point GetPosition() const;
+	LONG GetRadius() const;
 private :
 	Point center;
 	LONG radius;
@@ -30,6 +31,7 @@ private :
 
 class MissileManager
 {
+public :
 	enum { count = 100 };
 private :
 	MissileManager();
@@ -44,6 +46,9 @@ public :
 	void Draw(HDC);
 
 	void push(Missile* pMissile);
+	void pop(const int& i);
+
+	Missile** getDepot();
 
 private :
 	Missile* depot[count];

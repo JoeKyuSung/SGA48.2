@@ -11,6 +11,8 @@ struct Point : public POINT
 	Point(const LONG& _x = 0, const LONG& _y = 0);
 
 	Point operator + (const Point& o) const;
+	Point operator - (const Point& o) const;
+	LONG operator ^ (const Point& o) const;
 };
 
 struct Size : public SIZE

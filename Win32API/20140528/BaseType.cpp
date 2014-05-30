@@ -9,6 +9,15 @@ Point Point::operator + (const Point& o) const
 {
 	return Point(x + o.x, y + o.y);
 }
+Point Point::operator - (const Point& o) const
+{
+	return Point(x - o.x, y - o.y);
+}
+LONG Point::operator ^ (const Point& o) const
+{
+	Point d = *this - o;
+	return (d.x*d.x + d.y*d.y);
+}
 
 
 Size::Size()

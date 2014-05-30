@@ -69,3 +69,15 @@ void MissileManager::push(Missile* pMissile)
 		}
 	}
 }
+void MissileManager::pop(const int& i)
+{
+	if (depot[i])
+	{
+		delete depot[i];
+		depot[i] = NULL;
+	}
+}
+Missile** MissileManager::getDepot()
+{
+	return depot;
+}
