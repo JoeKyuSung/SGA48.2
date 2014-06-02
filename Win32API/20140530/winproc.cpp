@@ -4,7 +4,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	static DWORD st = 0;
 	static DWORD dt = 0;
-	static Point ptMouse[10];
+	static const int count = 15;
+	static Point ptMouse[count];
 	static LONG radius = 50;
 
 	if (uMsg == WM_CREATE)
@@ -14,16 +15,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 
 		st = ::GetTickCount();
-		::SetTimer(hWnd, 0, 50, NULL);
-
-		::ShowCursor(FALSE);
+		::SetTimer(hWnd, 0, 10, NULL);
 
 		return 0;
 	}
 	else if (uMsg == WM_DESTROY)
 	{
-		::ShowCursor(TRUE);
-
 		::KillTimer(hWnd, 0);
 
 		::PostQuitMessage(0);
@@ -38,26 +35,30 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		RECT rc;
 		::GetClientRect(hWnd, &rc);
 
-		HBRUSH hBrush = ::CreateSolidBrush(RGB(255,0,0));
-		HBRUSH hOldBrush = ::Select(hdc, hBrush);
-
-		HPEN hPen = ::CreatePen(PS_SOLID, 1, RGB(255,0,0));
-		HPEN hOldPen = ::Select(hdc, hPen);
-
-		for (int i = 9; i >= 0; i--)
+		for (int i = count-1; i >= 0; i--)
 		{
-			int r = int(radius*float(10-i)/10);
+			BYTE g = 17*i; // 17*15 = 255
+			BYTE b = g;
+
+			HBRUSH hBrush = ::CreateSolidBrush(RGB(255,g,b));
+			HBRUSH hOldBrush = ::Select(hdc, hBrush);
+
+			HPEN hPen = ::CreatePen(PS_SOLID, 1, RGB(255,g,b));
+			HPEN hOldPen = ::Select(hdc, hPen);
+
+			int r = radius - (2*i);
 			::Ellipse(hdc, ptMouse[i].x - r,
 				ptMouse[i].y - r,
 				ptMouse[i].x + r,
 				ptMouse[i].y + r);
+
+			::Select(hdc, hOldPen);
+			::DeleteObject(hPen);
+
+			::Select(hdc, hOldBrush);
+			::DeleteObject(hBrush);
+
 		}
-
-		::Select(hdc, hOldPen);
-		::DeleteObject(hPen);
-
-		::Select(hdc, hOldBrush);
-		::DeleteObject(hBrush);
 
 
 		::EndPaint(hWnd, &ps);
@@ -78,7 +79,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
 		// TODO
 		Point tmp = ptMouse[0];
-		for (int i = 1; i < 10 - 1; i++)
+		for (int i = 1; i < count; i++)
 		{
 			tmp = follow(ptMouse[i], tmp);
 		}
