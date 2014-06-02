@@ -4,27 +4,29 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	static DWORD st = 0;
 	static DWORD dt = 0;
-	static Point ptMouse[10];
-	static LONG radius = 50;
+
+	static HBITMAP hStar = NULL;
+	static Point ptMouse;
 
 	if (uMsg == WM_CREATE)
 	{
 		Rect rc;
 		::GetClientRect(hWnd, &rc);
 
+		hStar = (HBITMAP)::LoadImage(NULL, _T("star.bmp"),
+			IMAGE_BITMAP, 0, 0,
+			LR_LOADFROMFILE | LR_CREATEDIBSECTION | LR_SHARED);
 
 		st = ::GetTickCount();
 		::SetTimer(hWnd, 0, 50, NULL);
-
-		::ShowCursor(FALSE);
 
 		return 0;
 	}
 	else if (uMsg == WM_DESTROY)
 	{
-		::ShowCursor(TRUE);
-
 		::KillTimer(hWnd, 0);
+
+		::DeleteObject(hStar);
 
 		::PostQuitMessage(0);
 		return 0;
@@ -38,36 +40,37 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		RECT rc;
 		::GetClientRect(hWnd, &rc);
 
-		HBRUSH hBrush = ::CreateSolidBrush(RGB(255,0,0));
-		HBRUSH hOldBrush = ::Select(hdc, hBrush);
+		BITMAP bm;
 
-		HPEN hPen = ::CreatePen(PS_SOLID, 1, RGB(255,0,0));
-		HPEN hOldPen = ::Select(hdc, hPen);
+		::GetObject(hStar, sizeof(BITMAP), &bm);
+		int width = bm.bmWidth;
+		int height = bm.bmHeight;
 
-		for (int i = 9; i >= 0; i--)
-		{
-			int r = int(radius*float(10-i)/10);
-			::Ellipse(hdc, ptMouse[i].x - r,
-				ptMouse[i].y - r,
-				ptMouse[i].x + r,
-				ptMouse[i].y + r);
-		}
+		// draw image...
+		HDC hBitmapDC = ::CreateCompatibleDC(hdc);
+		HBITMAP hOldStar = ::Select(hBitmapDC, hStar);
 
-		::Select(hdc, hOldPen);
-		::DeleteObject(hPen);
+		::GdiTransparentBlt(hdc, ptMouse.x - width/2,
+			ptMouse.y - height/2, width, height, 
+			hBitmapDC, 0, 0,
+			width, height,
+			RGB(255,255,255));
 
-		::Select(hdc, hOldBrush);
-		::DeleteObject(hBrush);
+		//::BitBlt(hdc, ptMouse.x - width/2,
+		//	ptMouse.y - height/2, width, height, hBitmapDC, 0, 0, SRCCOPY);
 
+		::Select(hBitmapDC, hOldStar);
+		::DeleteDC(hBitmapDC);
 
 		::EndPaint(hWnd, &ps);
 		return 0;
 	}
 	else if (uMsg == WM_MOUSEMOVE)
 	{
-		::GetCursorPos(&ptMouse[0]);
-		ptMouse[0] = ptMouse[0].ToClient(hWnd);
+		::GetCursorPos(&ptMouse);
+		ptMouse = ptMouse.ToClient(hWnd);
 
+		// redraw
 		Rect rc;
 		::GetClientRect(hWnd, &rc);
 		::InvalidateRect(hWnd, &rc, TRUE);
@@ -77,11 +80,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	else if (uMsg == WM_TIMER)
 	{
 		// TODO
-		Point tmp = ptMouse[0];
-		for (int i = 1; i < 10 - 1; i++)
-		{
-			tmp = follow(ptMouse[i], tmp);
-		}
 
 		dt = ::GetTickCount() - st;
 		st = ::GetTickCount();
@@ -97,10 +95,3 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	return ::DefWindowProc(hWnd,uMsg,wParam,lParam);
 }
 
-Point follow(Point& dest, const Point& src)
-{
-	Point tmp = dest;
-	dest = src;
-
-	return tmp;
-}
