@@ -17,6 +17,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			IMAGE_BITMAP, 0, 0,
 			LR_LOADFROMFILE | LR_CREATEDIBSECTION | LR_SHARED);
 
+		ptMouse = Point(rc.center().x, 0);
+
 		st = ::GetTickCount();
 		::SetTimer(hWnd, 0, 50, NULL);
 
@@ -67,8 +69,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	}
 	else if (uMsg == WM_MOUSEMOVE)
 	{
-		::GetCursorPos(&ptMouse);
-		ptMouse = ptMouse.ToClient(hWnd);
+		//::GetCursorPos(&ptMouse);
+		//ptMouse = ptMouse.ToClient(hWnd);
 
 		// redraw
 		Rect rc;
@@ -79,14 +81,23 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	}
 	else if (uMsg == WM_TIMER)
 	{
+		Rect rc;
+		::GetClientRect(hWnd, &rc);
+
 		// TODO
+		ptMouse.x += 5;
+		ptMouse.y += 5;
+
+		if (!::PtInRect(&rc, ptMouse))
+		{
+			ptMouse.x = rand()%rc.width();
+			ptMouse.y = 0;
+		}
 
 		dt = ::GetTickCount() - st;
 		st = ::GetTickCount();
 
 		// redraw
-		RECT rc;
-		::GetClientRect(hWnd, &rc);
 		::InvalidateRect(hWnd, &rc, TRUE);
 
 		return 0;
