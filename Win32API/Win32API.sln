@@ -19,6 +19,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "20140530", "20140530\201405
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "20140602", "20140602\20140602.vcproj", "{43013273-D761-4A62-AC0A-CFC7943B6379}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "20140609", "20140609\20140609.vcproj", "{6D5053A2-3295-4DD9-983C-A528C2E35AAA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -61,6 +63,10 @@ Global
 		{43013273-D761-4A62-AC0A-CFC7943B6379}.Debug|Win32.Build.0 = Debug|Win32
 		{43013273-D761-4A62-AC0A-CFC7943B6379}.Release|Win32.ActiveCfg = Release|Win32
 		{43013273-D761-4A62-AC0A-CFC7943B6379}.Release|Win32.Build.0 = Release|Win32
+		{6D5053A2-3295-4DD9-983C-A528C2E35AAA}.Debug|Win32.ActiveCfg = Debug|Win32
+		{6D5053A2-3295-4DD9-983C-A528C2E35AAA}.Debug|Win32.Build.0 = Debug|Win32
+		{6D5053A2-3295-4DD9-983C-A528C2E35AAA}.Release|Win32.ActiveCfg = Release|Win32
+		{6D5053A2-3295-4DD9-983C-A528C2E35AAA}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
