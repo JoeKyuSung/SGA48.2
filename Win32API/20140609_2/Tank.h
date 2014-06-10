@@ -2,59 +2,64 @@
 
 #include <windows.h>
 #include "BaseType.h"
-#include "Missile.h"
+#include "Object.h"
+#include "Bullet.h"
+#include "Block.h"
+#include "Collision.h"
 
-class Tank
+class Tank : public Object
 {
 public :
 	Tank();
-	~Tank();
+	virtual ~Tank();
 
-	void Attach(HWND);
+public :
+	virtual void Input(DWORD);
+	virtual void Update(DWORD);
+	virtual void Draw(HDC);
 
-	void Input(DWORD tick);
-	void Update(DWORD tick);
-	void Draw(HDC);
+   virtual bool IsCollide(Object* );
 
-	void SetPosition(const Point& pt);
+   virtual void DoBreak();
+
 	void SetRadius(const LONG& r);
-	void SetRotateSpeed(const LONG& s);
-	void SetMoveSpeed(const LONG& s);
-	Point GetCenter() const;
+	void SetLength(const LONG& l);
+	void SetFireDelay(const DWORD& d);
+	void SetKeyMapping(const int& fire,
+					   const int& left,
+					   const int& right,
+					   const int& forward,
+					   const int& backward);
 
-	void SetKeyboard(const int& left, 
-					const int& right, 
-					const int& fire,
-					const int& forward,
-					const int& backward);
+	void AddHealth(const int& diff);
 
-	void ChangeHealth(const int& diff);
+   LONG GetRadius() const;
 
 private :
 	void _changepoint();
 
 private :
-	HWND hOwner;
-
-	Point center;
-	LONG radius;
-
-	LONG rotate_speed;
-	LONG move_speed;
 	Point ptEnd;
+	LONG radius;
+	LONG length;
 
-	float theta;
+	LONG theta;
 
-	DWORD input_dt;
-	DWORD input_delay;
+	// fire 
+	DWORD fire_dt;
+	DWORD fire_delay;
 
+	int key_fire;
 	int key_left;
 	int key_right;
 	int key_forward;
 	int key_backward;
-	int key_fire;
+	int key_powerup;
+	int key_powerdown;
 
-	COLORREF hp_color;
+	LONG power;
+
 	int hp_total;
 	int hp_current;
+	COLORREF hp_color;
 };

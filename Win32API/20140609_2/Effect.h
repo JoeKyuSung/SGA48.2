@@ -1,56 +1,33 @@
 ﻿#pragma once
 
 #include "BaseType.h"
-#include "Utility.hpp"
+#include "Object.h"
 
-class Effect
+class Effect : public Object
 {
 public :
 	Effect();
 	~Effect();
 
-	void Input(DWORD);
-	void Update(DWORD);
-	void Draw(HDC);
+	virtual void Input(DWORD);
+	virtual void Update(DWORD);
+	virtual void Draw(HDC);
 
-	void SetPosition(const Point& );
-	void SetRadius(const float& );
-	void SetAngle(const LONG& );
-	void SetSpeed(const LONG& );
+	virtual bool IsCollide(Object* );
 
-	Point GetPosition() const;
-	float GetRadius() const;
+	virtual void DoBreak();
+
+	void SetRadius(const LONG& r);
+	void SetAngle(const float& ang);
+
+	LONG GetRadius() const;
 
 private :
-	Point center;
-	float radius;
 	LONG theta;
+	LONG radius;
+
+	DWORD update_dt;
+	DWORD update_delay;
+
 	LONG speed;
 };
-
-#include <list>
-
-class EffectManager : public singleton<EffectManager>
-{
-	friend class singleton<EffectManager>;
-	//typedef std::list<Effect*> EffectList;
-	//typedef std::list<Effect*>::iterator EffectIter;
-private :
-	EffectManager();
-	~EffectManager();
-
-public :
-	void Attach(HWND);
-
-	void Input(DWORD);
-	void Update(DWORD);
-	void Draw(HDC);
-
-	void push(Effect* );
-
-private :
-	HWND hOwner;
-	std::list<Effect*> depot;
-};
-
-#define EffectDepot EffectManager::GetReference()

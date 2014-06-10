@@ -7,18 +7,8 @@
 #include <time.h> // time
 #include <sstream> // wostringstream
 #include "BaseType.h"
-#include "Utility.hpp"
+#include "Bullet.h"
 #include "Tank.h"
-#include "Missile.h"
-
-enum mouse_state_id
-{
-	MS_NORMAL,
-	MS_UP,
-	MS_DOWN,
-	MS_LEFT,
-	MS_RIGHT,
-	MS_MAX
-};
+#include "Block.h"
 
 LRESULT CALLBACK WndProc(HWND,UINT,WPARAM,LPARAM);

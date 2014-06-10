@@ -1,50 +1,62 @@
 ﻿#include "Effect.h"
 
 Effect::Effect()
+: update_dt(0), update_delay(100)
+, Object(OBJ_EFFECT, false)
+, speed(5)
 {
 }
 Effect::~Effect()
 {
 }
 
-void Effect::Input(DWORD tick)
+void Effect::Input(DWORD)
 {
 }
 void Effect::Update(DWORD tick)
 {
-	center.x = LONG(center.x + speed*sin(theta*D2R));
-	center.y = LONG(center.y - speed*cos(theta*D2R));
+	if (update_dt > update_delay)
+	{
+		radius -= 1;
+		if (radius < 0)
+		{
+			SetNeedToClean();
+		}
 
-	radius = radius*0.99;
+		update_dt -= update_delay;
+	}
+
+	update_dt += tick;
+
+	pos().x = pos().x + speed*sin(theta*D2R);
+	pos().y = pos().y - speed*cos(theta*D2R);
 }
 void Effect::Draw(HDC hdc)
 {
-	::Ellipse(hdc, center.x - radius, center.y - radius,
-		center.x + radius, center.y + radius);
+	::Ellipse(hdc, pos().x - radius, pos().y - radius,
+		pos().x + radius, pos().y + radius);
 }
 
-void Effect::SetPosition(const Point& pt)
+bool Effect::IsCollide(Object* )
 {
-	center = pt;
+	return false;
 }
-void Effect::SetRadius(const float& r)
+
+void Effect::DoBreak()
+{
+	// do nothing...
+}
+
+void Effect::SetRadius(const LONG& r)
 {
 	radius = r;
 }
-void Effect::SetAngle(const LONG& ang)
+void Effect::SetAngle(const float& ang)
 {
 	theta = ang;
 }
-void Effect::SetSpeed(const LONG& s)
-{
-	speed = s;
-}
 
-Point Effect::GetPosition() const
-{
-	return center;
-}
-float Effect::GetRadius() const
+LONG Effect::GetRadius() const
 {
 	return radius;
 }

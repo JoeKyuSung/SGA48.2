@@ -175,19 +175,27 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Block.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Bullet.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Collision.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Effect.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\EffectManager.cpp"
+				RelativePath=".\Object.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Missile.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\MissileDepot.cpp"
+				RelativePath=".\ObjectManager.cpp"
 				>
 			</File>
 			<File
@@ -213,11 +221,23 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Block.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Bullet.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Collision.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Effect.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Missile.h"
+				RelativePath=".\Object.h"
 				>
 			</File>
 			<File

@@ -21,18 +21,19 @@ INT WINAPI _tWinMain(HINSTANCE hInstance,
 	wcex.hInstance = hInstance;
 	wcex.hIcon = ::LoadIcon(NULL, IDI_APPLICATION);
 	wcex.hCursor = ::LoadCursor(NULL, IDC_ARROW);
-	wcex.hbrBackground = (HBRUSH)::GetStockObject(BLACK_BRUSH);
+	wcex.hbrBackground = (HBRUSH)::GetStockObject(WHITE_BRUSH);
 	wcex.lpszMenuName = NULL;
 	wcex.lpszClassName = szClassName;
 	wcex.hIconSm = ::LoadIcon(NULL, IDI_APPLICATION);
 
 	if (!::RegisterClassEx(&wcex))
 	{
+		DWORD dwError = ::GetLastError();
 		return 1;
 	}
 
-	int width = 800;
-	int height = 400;
+	int width = 1000;
+	int height = 600;
 
 	int cx = ::GetSystemMetrics(SM_CXSCREEN);
 	int cy = ::GetSystemMetrics(SM_CYSCREEN);
@@ -43,12 +44,9 @@ INT WINAPI _tWinMain(HINSTANCE hInstance,
 	DWORD dwStyle = WS_OVERLAPPEDWINDOW;
 	dwStyle &= ~WS_MAXIMIZEBOX;
 	dwStyle &= ~WS_THICKFRAME;
-	//dwStyle = dwStyle & ~WS_MINIMIZEBOX;
-	//dwStyle = dwStyle & ~WS_SYSMENU;
-	//dwStyle = dwStyle & ~WS_CAPTION;
 
-	HWND hWnd = ::CreateWindowEx(0, szClassName, _T("Tank"),
-		dwStyle,
+	HWND hWnd = ::CreateWindowEx(0, szClassName, _T("Win32 Sample"),
+		dwStyle, 
 		x, y,
 		width, height,
 		NULL, NULL, hInstance, NULL);
@@ -60,11 +58,6 @@ INT WINAPI _tWinMain(HINSTANCE hInstance,
 
 	::ShowWindow(hWnd, SW_NORMAL);
 	::UpdateWindow(hWnd);
-
-	Rect rc;
-	::GetClientRect(hWnd, &rc);
-	::ClipCursor(&rc.ToScreen(hWnd));
-
 
 	MSG msg;
 
