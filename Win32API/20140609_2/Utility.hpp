@@ -14,3 +14,9 @@ public :
       return instance;
    }
 };
+
+template<typename T>
+T Select(HDC hdc, T obj)
+{
+	return (T)::SelectObject(hdc, obj);
+}

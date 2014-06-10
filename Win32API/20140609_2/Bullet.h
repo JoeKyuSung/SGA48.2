@@ -2,6 +2,7 @@
 
 #include <windows.h>
 #include "BaseType.h"
+#include "Utility.hpp"
 #include "Object.h"
 #include "Tank.h"
 #include "Block.h"

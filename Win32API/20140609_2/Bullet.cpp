@@ -27,8 +27,14 @@ void Bullet::Update(DWORD)
 }
 void Bullet::Draw(HDC hdc)
 {
+	HBRUSH hBrush = ::CreateSolidBrush(RGB(255,255,0));
+	HBRUSH hOldBrush = ::Select(hdc, hBrush);
+
 	::Ellipse(hdc, pos().x - radius, pos().y - radius,
 		pos().x + radius, pos().y + radius);
+
+	::Select(hdc, hOldBrush);
+	::DeleteObject(hBrush);
 }
 
 bool Bullet::IsCollide(Object* obj)
