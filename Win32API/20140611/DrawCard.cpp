@@ -33,9 +33,14 @@ void DrawCard(HDC hdc,
 	BITMAP bm;
 	::GetObject(*it, sizeof(BITMAP), &bm);
 
+	BLENDFUNCTION bf;
+    bf.BlendOp = AC_SRC_OVER;
+    bf.BlendFlags = 0;
+    bf.SourceConstantAlpha = 100;
+    bf.AlphaFormat = 0;
 
-	::StretchBlt(hdc, rcBox.left, rcBox.top, rcBox.width(), rcBox.height(),
-		hBitmapDC, 0, 0, bm.bmWidth, bm.bmHeight, SRCCOPY);
+	::GdiAlphaBlend(hdc, rcBox.left, rcBox.top, rcBox.width(), rcBox.height(),
+		hBitmapDC, 0, 0, bm.bmWidth, bm.bmHeight, bf);
 
 	::Select(hBitmapDC, hOldBitmap);
 	::DeleteDC(hBitmapDC);
