@@ -21,7 +21,7 @@ INT WINAPI _tWinMain(HINSTANCE hInstance,
 	wcex.hInstance = hInstance;
 	wcex.hIcon = ::LoadIcon(NULL, IDI_APPLICATION);
 	wcex.hCursor = ::LoadCursor(NULL, IDC_ARROW);
-	wcex.hbrBackground = (HBRUSH)::GetStockObject(WHITE_BRUSH);
+	wcex.hbrBackground = (HBRUSH)::GetStockObject(BLACK_BRUSH);
 	wcex.lpszMenuName = NULL;
 	wcex.lpszClassName = szClassName;
 	wcex.hIconSm = ::LoadIcon(NULL, IDI_APPLICATION);

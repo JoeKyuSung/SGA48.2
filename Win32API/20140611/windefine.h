@@ -13,9 +13,4 @@
 
 LRESULT CALLBACK WndProc(HWND,UINT,WPARAM,LPARAM);
 
-void DrawCard(HDC hdc, 
-			  std::list<HBITMAP>& cardlist, 
-			  const Rect& rcBox, 
-			  const int& idx, 
-			  const int& current,
-			  const BYTE& alpha);
+void DrawCard(HDC hdc, std::list<HBITMAP>& cardlist, const Rect& rcBox, const int& idx, const int& current);
